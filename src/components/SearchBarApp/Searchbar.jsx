@@ -1,5 +1,5 @@
 import React from "react";
-import { SearchBarContainer,SearchForm,SearchFormInput } from "./SearchBar.styled";
+import { SearchBarContainer,SearchForm,SearchFormInput,SearchFormButton } from "./SearchBar.styled";
 
 export class SearchBar extends React.Component{
     state={
@@ -9,7 +9,7 @@ export class SearchBar extends React.Component{
         return(
             <SearchBarContainer>
 <SearchForm>
-    <SearchFormInput/>
+<SearchFormButton></SearchFormButton><SearchFormInput/>
 </SearchForm>
             </SearchBarContainer>
         )
