@@ -3,13 +3,34 @@ import { SearchBarContainer,SearchForm,SearchFormInput,SearchFormButton } from "
 
 export class SearchBar extends React.Component{
     state={
-        picture:''
+        searchPicture:''
+    }
+
+    onInputSearch=(e)=>{
+this.setState({searchPicture:e.currentTarget.value})
+    }
+
+    onClickSearch=(e)=>{
+        e.preventDefault()
+        if(this.state.searchPicture.trim() === ""){
+            window.alert('Error')
+        }
+      this.props.onSubmit(this.state.searchPicture)
     }
     render(){
+        
         return(
             <SearchBarContainer>
-<SearchForm>
-<SearchFormButton></SearchFormButton><SearchFormInput/>
+<SearchForm onSubmit={this.onClickSearch}>
+<SearchFormButton
+type='submit'
+></SearchFormButton>
+<SearchFormInput
+type='text'
+name='name'
+onChange={this.onInputSearch}
+value={this.state.picture}
+/>
 </SearchForm>
             </SearchBarContainer>
         )
