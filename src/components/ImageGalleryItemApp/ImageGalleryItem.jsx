@@ -1,7 +1,9 @@
-import { ImageGalleryItemContainer } from "./ImageGalleryItem.styled"
+import { ImageGalleryItemContainer,Img } from "./ImageGalleryItem.styled"
 
-export const ImageGalleryItem=()=>{
-    return (
-        <ImageGalleryItemContainer></ImageGalleryItemContainer>
-    )
-}
+export const ImageGalleryItem=({pictures})=>{
+   return pictures.map((picture)=>{
+        const {id,webformatURL}=picture
+return(<ImageGalleryItemContainer key={id}>
+        <Img src={webformatURL}  alt="Picture" />
+        </ImageGalleryItemContainer>
+        )    })}
