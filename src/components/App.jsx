@@ -1,7 +1,10 @@
 import React from "react";
+import { ToastContainer,toast } from 'react-toastify';
 import { SearchBar } from "./SearchBarApp/Searchbar";
 import { ImageGallery } from "./ImageGalleryApp/ImageGallery";
 import { Button } from "./ButtonLoadMore/Button";
+import { Modal } from "./ModalApp/Modal";
+import * as PictureService from "Service/API";
 
 export class App extends React.Component {
   state={
@@ -9,7 +12,11 @@ export class App extends React.Component {
     picture:'',
     searchedPictures:[],
     page:1,
+    total:'',
+    totalHits:'',
+    isOpen:false,
   }
+
   componentDidUpdate=(prevProps,prevState)=>{
     const {page,picture}=this.state;
     if(picture !== prevState.picture || page !== prevState.page){
@@ -17,14 +24,20 @@ export class App extends React.Component {
       }}
 
 getPictures=async(page,picture)=>{
-  const APIKEY='27705684-ea6ff4282bc06d8fe5ddb5326'
-    const URL=`https://pixabay.com/api/?q=${picture}&page=${page}&key=${APIKEY}&image_type=photo&orientation=horizontal&per_page=12`
-  await fetch(URL).then(response=>{
-    this.setState({status:"pending"})
-    return response.json()}).then(pictures=>{
+  if(!picture){
+    return}
+  this.setState({status:"pending"})
+  try {
+ const pictures=await PictureService.fetchPictures(page,picture);
+ if (pictures.hits.length===0){
+  return toast.warn('Sorry, no results were found for your search')
+ }
      this.setState(prevState=>({
       searchedPictures:[...prevState.searchedPictures,...pictures.hits],
-      status:"resolved"}))})
+      total:pictures.total,
+      totalHits:pictures.totalHits}))} catch { toast.warn('Error')} finally {
+        this.setState({status:'resolved'})
+      }
 
 }
 
@@ -34,11 +47,15 @@ getPictures=async(page,picture)=>{
       }
   
   handleSubmit=(searchData)=>{
+    if (searchData.trim()===''){
+      return toast.warn('Enter Something fo search!')
+      
+    }
     this.setState({picture: searchData, page:1,searchedPictures:[]})}
 
   render(){ 
     const {handleSubmit,onMoreButton}=this;
-   const {searchedPictures,status}= this.state;
+   const {searchedPictures,status,isOpen}= this.state;
    return (<><SearchBar onSubmit={handleSubmit}/>
     <ImageGallery 
     status={status}
@@ -47,5 +64,17 @@ getPictures=async(page,picture)=>{
       type='button' 
       onClick={onMoreButton}
       title='Load more'/>}
+       {isOpen && <Modal/>}
+      <ToastContainer
+      position="top-center"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+    />
       </>)}
 }
