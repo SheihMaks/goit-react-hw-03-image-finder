@@ -8,7 +8,7 @@ export class SearchBar extends React.Component{
 
     
     onInputSearch=(e)=>{
-        if (this.state.searchPicture===e.currentTarget.value){return}
+        
 this.setState({searchPicture:e.currentTarget.value})
     }
 
