@@ -1,10 +1,10 @@
 import {ImageGalleryList} from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItemApp/ImageGalleryItem';
-import { Oval } from  'react-loader-spinner';
+import { Spiner } from 'components/SpinnerApp/Spiner';
 export const ImageGallery=({status,searchedPictures})=>{
     if(status==='pending'){
-        return(<Oval color="#00BFFF" height={80} width={80} />)}
-    return (<ImageGalleryList>
-         {status==="resolved" && <ImageGalleryItem pictures={searchedPictures}/>}
+        return(<Spiner/>)}
+    return (<ImageGalleryList>{status==="resolved" && 
+    searchedPictures.map(el=>{return(<ImageGalleryItem key={el.id} picture={el}/>)})}
     </ImageGalleryList>)
 }

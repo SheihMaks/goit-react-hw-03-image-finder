@@ -1,10 +1,25 @@
+import React from "react"
 import { ModalWindow, Overlay } from "./Modal.styled"
 
+export class Modal extends React.Component{
+    componentDidMount(){
+        window.addEventListener('keydown',this.onCloseModal)
+    }
 
-export const Modal=()=>{
-    return (<Overlay>
+    componentWillUnmount(){
+        window.removeEventListener('keydown',this.onCloseModal)
+    }
+
+    onCloseModal=(ev)=>{
+        if (ev.key ==='Escape' || ev.target === ev.currentTarget){
+        this.props.onClick()}
+    }
+
+    render(){
+        const {imageModal}= this.props;
+        return(<Overlay onClick={this.onCloseModal}>
     <ModalWindow>
-      <img src="" alt="Image" />
+      <img src={imageModal} alt="" />
     </ModalWindow>
   </Overlay>)
-}
+}}

@@ -3,32 +3,30 @@ import { ToastContainer,toast } from 'react-toastify';
 import { SearchBar } from "./SearchBarApp/Searchbar";
 import { ImageGallery } from "./ImageGalleryApp/ImageGallery";
 import { Button } from "./ButtonLoadMore/Button";
-import { Modal } from "./ModalApp/Modal";
 import * as PictureService from "Service/API";
 
 export class App extends React.Component {
   state={
     status:'idle',
-    picture:'',
+    query:'',
     searchedPictures:[],
     page:1,
     total:'',
     totalHits:'',
-    isOpen:false,
   }
 
   componentDidUpdate=(prevProps,prevState)=>{
-    const {page,picture}=this.state;
-    if(picture !== prevState.picture || page !== prevState.page){
-      this.getPictures(page,picture)
+    const {page,query}=this.state;
+    if(query !== prevState.query || page !== prevState.page){
+      this.getPictures(page,query)
       }}
 
-getPictures=async(page,picture)=>{
-  if(!picture){
+getPictures=async(page,query)=>{
+  if(!query){
     return}
   this.setState({status:"pending"})
   try {
- const pictures=await PictureService.fetchPictures(page,picture);
+ const pictures=await PictureService.fetchPictures(page,query);
  if (pictures.hits.length===0){
   return toast.warn('Sorry, no results were found for your search')
  }
@@ -47,15 +45,17 @@ getPictures=async(page,picture)=>{
       }
   
   handleSubmit=(searchData)=>{
+    const {query}=this.state;
+    if (query===searchData){return}
     if (searchData.trim()===''){
       return toast.warn('Enter Something fo search!')
       
     }
-    this.setState({picture: searchData, page:1,searchedPictures:[]})}
+    this.setState({query: searchData, page:1,searchedPictures:[]})}
 
   render(){ 
     const {handleSubmit,onMoreButton}=this;
-   const {searchedPictures,status,isOpen}= this.state;
+   const {searchedPictures,status}= this.state;
    return (<><SearchBar onSubmit={handleSubmit}/>
     <ImageGallery 
     status={status}
@@ -64,7 +64,6 @@ getPictures=async(page,picture)=>{
       type='button' 
       onClick={onMoreButton}
       title='Load more'/>}
-       {isOpen && <Modal/>}
       <ToastContainer
       position="top-center"
       autoClose={3000}
