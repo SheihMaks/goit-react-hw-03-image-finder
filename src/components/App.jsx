@@ -1,4 +1,5 @@
 import React from "react";
+import {AppContainer} from './App.styled'
 import { ToastContainer,toast } from 'react-toastify';
 import { SearchBar } from "./SearchBarApp/Searchbar";
 import { ImageGallery } from "./ImageGalleryApp/ImageGallery";
@@ -60,15 +61,15 @@ showingButton=(pictures)=>{
   render(){ 
     const {handleSubmit,onMoreButton}=this;
     const {searchedPictures,status,isVisibleBtn}= this.state;
-    return (<><SearchBar onSubmit={handleSubmit}/>
+    return (<AppContainer><SearchBar onSubmit={handleSubmit}/>
     <ImageGallery 
-    status={status}
-    searchedPictures={searchedPictures}/>
+      status={status}
+      searchedPictures={searchedPictures}/>
     {isVisibleBtn && <Button
       type='button' 
       onClick={onMoreButton}
       title='Load more'/>}
-      <ToastContainer
+    <ToastContainer
       position="top-center"
       autoClose={3000}
       hideProgressBar={false}
@@ -79,5 +80,5 @@ showingButton=(pictures)=>{
       draggable
       pauseOnHover
     />
-      </>)}
+      </AppContainer>)}
 }
