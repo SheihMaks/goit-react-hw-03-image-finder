@@ -11,8 +11,8 @@ export class App extends React.Component {
     query:'',
     searchedPictures:[],
     page:1,
-    total:'',
     totalHits:'',
+    isVisibleBtn: false,
   }
 
   componentDidUpdate=(prevProps,prevState)=>{
@@ -23,17 +23,27 @@ export class App extends React.Component {
 
 getPictures=async(page,query)=>{
   if(!query) return;
-  this.setState({status:"pending"})
+  this.setState({status:"pending",isVisibleBtn:false})
   try {
   const pictures=await PictureService.fetchPictures(page,query);
-  console.log(pictures)
+  this.showingButton(pictures)
   this.setState(prevState=>({
     searchedPictures:[...prevState.searchedPictures,...pictures.hits],
-    total:pictures.total,
-    totalHits:pictures.totalHits}))} catch { toast.warn('Error')} finally {
+    totalHits:pictures.totalHits,
+    }))} catch { toast.warn('Error')} finally {
     this.setState({status:'resolved'})
       }
 }
+
+showingButton=(pictures)=>{
+  const {totalHits,page}= this.state;
+  const {per_page}= PictureService.options;
+  if (totalHits%per_page===0){
+  let lastPage=totalHits/per_page
+  pictures.hits.length>=per_page && page !==lastPage ?
+  this.setState({isVisibleBtn:true}) : this.setState({isVisibleBtn:false})}
+  else{pictures.hits.length>=per_page ?
+  this.setState({isVisibleBtn:true}) : this.setState({isVisibleBtn:false})}}
 
   onMoreButton=()=>{
         const {page}= this.state;
@@ -42,7 +52,7 @@ getPictures=async(page,query)=>{
   
   handleSubmit=(searchData)=>{
     const {query}=this.state;
-    if (query===searchData) return;
+    if (query===searchData && query !== '') return;
     if (searchData.trim()===''){
       return toast.warn('Enter Something fo search!')}
     this.setState({query: searchData, page:1,searchedPictures:[]})
@@ -50,12 +60,12 @@ getPictures=async(page,query)=>{
 
   render(){ 
     const {handleSubmit,onMoreButton}=this;
-    const {searchedPictures,status}= this.state;
+    const {searchedPictures,status,isVisibleBtn}= this.state;
     return (<><SearchBar onSubmit={handleSubmit}/>
     <ImageGallery 
     status={status}
     searchedPictures={searchedPictures}/>
-    {status==="resolved" && <Button
+    {isVisibleBtn && <Button
       type='button' 
       onClick={onMoreButton}
       title='Load more'/>}
