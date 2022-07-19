@@ -1,5 +1,7 @@
-import React from "react"
-import { ModalWindow, Overlay } from "./Modal.styled"
+import React from "react";
+import PropTypes from 'prop-types';
+
+import { ModalWindow, Overlay,ModalImage } from "./Modal.styled"
 
 export class Modal extends React.Component{
     componentDidMount(){
@@ -16,11 +18,15 @@ export class Modal extends React.Component{
     }
 
     render(){
+        const {onCloseModal}=this;
         const {imageModal}= this.props;
-        return(<Overlay onClick={this.onCloseModal}>
+        return(<Overlay onClick={onCloseModal}>
     <ModalWindow>
-    <img src={imageModal} alt="" />
+    <ModalImage src={imageModal} alt="" />
     </ModalWindow>
-</Overlay>)
+</Overlay>)}
 }
+
+Modal.propTypes={
+    imageModal:PropTypes.string.isRequired
 }

@@ -1,11 +1,13 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { ImageGalleryItemContainer,Img } from "./ImageGalleryItem.styled"
 import { Modal } from "components/ModalApp/Modal";
 export class ImageGalleryItem extends React.Component {
 
-    state={
+state={
     isOpen:false
 }
+
 onToggleModal=()=>{
     this.setState(prevState=>({isOpen: prevState.isOpen ? false : true}))
 }
@@ -18,3 +20,8 @@ return(<ImageGalleryItemContainer>
         {isOpen && <Modal onClick={this.onToggleModal} imageModal={largeImageURL} />}
         </ImageGalleryItemContainer>
         )}}
+
+        ImageGalleryItem.propTypes={
+            webformatURL:PropTypes.string,
+            largeImageURL:PropTypes.string,
+        }

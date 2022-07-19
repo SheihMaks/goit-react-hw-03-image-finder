@@ -1,3 +1,5 @@
+
+import PropTypes from 'prop-types';
 import {ImageGalleryList} from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItemApp/ImageGalleryItem';
 import {UncorrectSearchMessage} from 'components/UncorrectSearchMessageApp/UccorrectSearchMessage';
@@ -10,4 +12,9 @@ export const ImageGallery=({status,searchedPictures})=>{
     {status==="resolved" && searchedPictures.length !== 0 && (searchedPictures.map(el=>{ 
         return(<ImageGalleryItem key={el.id} picture={el}/>)}))}
     </ImageGalleryList>)
+}
+
+ImageGallery.propTypes={
+    status:PropTypes.string.isRequired,
+    searchedPictures:PropTypes.array.isRequired,
 }
