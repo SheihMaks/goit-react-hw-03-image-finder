@@ -1,4 +1,5 @@
 import React from "react";
+import {ImSearch} from "react-icons/im";
 import { SearchBarContainer,SearchForm,SearchFormInput,SearchFormButton } from "./SearchBar.styled";
 
 export class SearchBar extends React.Component{
@@ -22,10 +23,11 @@ export class SearchBar extends React.Component{
 <SearchForm onSubmit={onClickSearch}>
 <SearchFormButton
 type='submit'
-></SearchFormButton>
+><ImSearch/></SearchFormButton>
 <SearchFormInput
 type='text'
-name='name'
+name='searchPicture'
+placeholder="Enter something for search pictures"
 onChange={onInputSearch}
 value={searchPicture}
 />
