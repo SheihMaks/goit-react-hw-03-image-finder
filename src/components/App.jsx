@@ -22,7 +22,6 @@ export class App extends React.Component {
       }}
 
 getPictures=async(page,query)=>{
-  if(!query) return;
   this.setState({status:"pending",isVisibleBtn:false})
   try {
   const pictures=await PictureService.fetchPictures(page,query);
