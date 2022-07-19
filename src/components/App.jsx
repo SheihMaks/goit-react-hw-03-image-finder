@@ -26,9 +26,7 @@ getPictures=async(page,query)=>{
   this.setState({status:"pending"})
   try {
   const pictures=await PictureService.fetchPictures(page,query);
-  if (pictures.hits.length===0){
-  return toast.warn('Sorry, no results were found for your search')
-  }
+  console.log(pictures)
   this.setState(prevState=>({
     searchedPictures:[...prevState.searchedPictures,...pictures.hits],
     total:pictures.total,
