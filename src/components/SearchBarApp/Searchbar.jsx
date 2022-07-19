@@ -6,29 +6,28 @@ export class SearchBar extends React.Component{
         searchPicture:''
     }
 
-    
     onInputSearch=(e)=>{
-        
-this.setState({searchPicture:e.currentTarget.value})
+        this.setState({searchPicture:e.currentTarget.value})
     }
 
     onClickSearch=(e)=>{
         e.preventDefault()
         this.props.onSubmit(this.state.searchPicture)
     }
+
     render(){
-        
-        return(
-            <SearchBarContainer>
-<SearchForm onSubmit={this.onClickSearch}>
+        const {searchPicture}=this.state;
+        const {onClickSearch,onInputSearch}=this;
+        return(<SearchBarContainer>
+<SearchForm onSubmit={onClickSearch}>
 <SearchFormButton
 type='submit'
 ></SearchFormButton>
 <SearchFormInput
 type='text'
 name='name'
-onChange={this.onInputSearch}
-value={this.state.picture}
+onChange={onInputSearch}
+value={searchPicture}
 />
 </SearchForm>
             </SearchBarContainer>

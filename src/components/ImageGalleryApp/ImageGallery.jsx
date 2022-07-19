@@ -1,6 +1,7 @@
 import {ImageGalleryList} from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItemApp/ImageGalleryItem';
 import { Spiner } from 'components/SpinnerApp/Spiner';
+
 export const ImageGallery=({status,searchedPictures})=>{
     if(status==='pending'){
         return(<Spiner/>)}

@@ -13,12 +13,7 @@ onToggleModal=()=>{
 render(){
     const {isOpen}= this.state;
     const {webformatURL,largeImageURL}= this.props.picture;
-   
-   
-        
-return(
-    
-<ImageGalleryItemContainer>
+return(<ImageGalleryItemContainer>
         <Img src={webformatURL}  alt="Picture" onClick={this.onToggleModal} />
         {isOpen && <Modal onClick={this.onToggleModal} imageModal={largeImageURL} />}
         </ImageGalleryItemContainer>

@@ -22,21 +22,19 @@ export class App extends React.Component {
       }}
 
 getPictures=async(page,query)=>{
-  if(!query){
-    return}
+  if(!query) return;
   this.setState({status:"pending"})
   try {
- const pictures=await PictureService.fetchPictures(page,query);
- if (pictures.hits.length===0){
+  const pictures=await PictureService.fetchPictures(page,query);
+  if (pictures.hits.length===0){
   return toast.warn('Sorry, no results were found for your search')
- }
-     this.setState(prevState=>({
-      searchedPictures:[...prevState.searchedPictures,...pictures.hits],
-      total:pictures.total,
-      totalHits:pictures.totalHits}))} catch { toast.warn('Error')} finally {
-        this.setState({status:'resolved'})
+  }
+  this.setState(prevState=>({
+    searchedPictures:[...prevState.searchedPictures,...pictures.hits],
+    total:pictures.total,
+    totalHits:pictures.totalHits}))} catch { toast.warn('Error')} finally {
+    this.setState({status:'resolved'})
       }
-
 }
 
   onMoreButton=()=>{
@@ -46,17 +44,16 @@ getPictures=async(page,query)=>{
   
   handleSubmit=(searchData)=>{
     const {query}=this.state;
-    if (query===searchData){return}
+    if (query===searchData) return;
     if (searchData.trim()===''){
-      return toast.warn('Enter Something fo search!')
-      
-    }
-    this.setState({query: searchData, page:1,searchedPictures:[]})}
+      return toast.warn('Enter Something fo search!')}
+    this.setState({query: searchData, page:1,searchedPictures:[]})
+  }
 
   render(){ 
     const {handleSubmit,onMoreButton}=this;
-   const {searchedPictures,status}= this.state;
-   return (<><SearchBar onSubmit={handleSubmit}/>
+    const {searchedPictures,status}= this.state;
+    return (<><SearchBar onSubmit={handleSubmit}/>
     <ImageGallery 
     status={status}
     searchedPictures={searchedPictures}/>

@@ -19,7 +19,8 @@ export class Modal extends React.Component{
         const {imageModal}= this.props;
         return(<Overlay onClick={this.onCloseModal}>
     <ModalWindow>
-      <img src={imageModal} alt="" />
+    <img src={imageModal} alt="" />
     </ModalWindow>
-  </Overlay>)
-}}
+</Overlay>)
+}
+}
