@@ -3,31 +3,21 @@ import PropTypes from 'prop-types';
 import { Modal } from "components/ModalApp/Modal";
 import { ImageGalleryItemContainer,Img } from "./ImageGalleryItem.styled"
 
-export class ImageGalleryItem extends React.Component {
-    state={largeImg:''}
-
-    onOpenModal=()=>{
-        const {largeImgLink}=this.props;
-        this.setState(({largeImg: largeImgLink}))
-      }
-      
-    onCloseModal=()=>this.setState({largeImg:''})
-
-render(){
-    const {webFormat}=this.props;
-    const {onOpenModal,onCloseModal}=this;
-    const {largeImg}=this.state;
+export const ImageGalleryItem=({webFormat,closeModal,imageModal,largeImgLink,onOpenModal})=>{
     return (<ImageGalleryItemContainer>
-        <Img src={webFormat} alt="Picture" onClick={onOpenModal} />
-        {largeImg !=='' && <Modal 
-    imageModal={largeImg} 
-    onClick={onCloseModal}/>}
+       <Img 
+       src={webFormat} 
+       alt="Picture" 
+       onClick={()=>onOpenModal(largeImgLink)} />
+       {imageModal !=='' && <Modal 
+       imageModal={imageModal} 
+       onCloseModal={closeModal}/>}
         </ImageGalleryItemContainer>
-        )}
+        )
 }
 
 ImageGalleryItem.propTypes={
-webFormat:PropTypes.string,
-largeImgLink:PropTypes.string,
-
+webFormat:PropTypes.string.isRequired,
+largeImgLink:PropTypes.string.isRequired,
+onOpenModal:PropTypes.func.isRequired,
 }
