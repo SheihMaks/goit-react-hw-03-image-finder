@@ -2,19 +2,15 @@
 import PropTypes from 'prop-types';
 import {ImageGalleryList} from './ImageGallery.styled';
 import { ImageGalleryItem } from 'components/ImageGalleryItemApp/ImageGalleryItem';
-import {UncorrectSearchMessage} from 'components/UncorrectSearchMessageApp/UccorrectSearchMessage';
-import { Spiner } from 'components/SpinnerApp/Spiner';
 
-export const ImageGallery=({status,searchedPictures})=>{
-    if(status==='pending'){ return(<Spiner/>)}
-    if(status==="resolved" && searchedPictures.length === 0){return (<UncorrectSearchMessage message='Sorry, no results were found for your search'/>)}
-    return (<ImageGalleryList>
-    {status==="resolved" && searchedPictures.length !== 0 && (searchedPictures.map(el=>{ 
-        return(<ImageGalleryItem key={el.id} picture={el}/>)}))}
+export const ImageGallery=({searchedPictures})=>{
+    return (<ImageGalleryList >
+    {searchedPictures.map(el=>{ 
+        const {webformatURL,largeImageURL}=el;
+        return(<ImageGalleryItem key={el.id} webFormat={webformatURL} largeImgLink={largeImageURL}/>)})}
     </ImageGalleryList>)
 }
 
 ImageGallery.propTypes={
-    status:PropTypes.string.isRequired,
     searchedPictures:PropTypes.array.isRequired,
 }

@@ -1,9 +1,13 @@
 import React from "react";
+import { Spiner } from './SpinnerApp/Spiner';
 import { ToastContainer,toast } from 'react-toastify';
 import { SearchBar } from "./SearchBarApp/Searchbar";
 import { ImageGallery } from "./ImageGalleryApp/ImageGallery";
 import { Button } from "./ButtonLoadMore/Button";
 import * as PictureService from "Service/API";
+import {UncorrectSearchMessage} from './UncorrectSearchMessageApp/UccorrectSearchMessage';
+
+
 
 export class App extends React.Component {
   state={
@@ -15,11 +19,21 @@ export class App extends React.Component {
     isVisibleBtn: false,
   }
 
+
+
+
+
+
+
+
   componentDidUpdate=(prevProps,prevState)=>{
     const {page,query}=this.state;
     if(query !== prevState.query || page !== prevState.page){
       this.getPictures(page,query)
       }}
+
+
+  
 
 getPictures=async(page,query)=>{
   this.setState({status:"pending",isVisibleBtn:false})
@@ -44,30 +58,34 @@ showingButton=(pictures)=>{
   else{pictures.hits.length>=per_page ?
   this.setState({isVisibleBtn:true}) : this.setState({isVisibleBtn:false})}}
 
-  onMoreButton=()=>{
-        const {page}= this.state;
-        this.setState({page: page +1})
+onMoreButton=()=>{
+  const {page}= this.state;
+  this.setState({page: page +1})
       }
   
-  handleSubmit=(searchData)=>{
-    const {query}=this.state;
-    if (query===searchData && query !== '') return;
-    if (searchData.trim()===''){
-      return toast.warn('Enter Something fo search!')}
-    this.setState({query: searchData, page:1,searchedPictures:[]})
+handleSubmit=(searchData)=>{
+  const {query}=this.state;
+  if (query===searchData && query !== '') return;
+  if (searchData.trim()===''){
+    return toast.warn('Enter Something fo search!')}
+  this.setState({query: searchData, page:1,searchedPictures:[]})
   }
 
+
+
   render(){ 
-    const {handleSubmit,onMoreButton}=this;
+    const {handleSubmit,onMoreButton,}=this;
     const {searchedPictures,status,isVisibleBtn}= this.state;
     return (<><SearchBar onSubmit={handleSubmit}/>
-    <ImageGallery 
-      status={status}
-      searchedPictures={searchedPictures}/>
+    {status==="resolved" && searchedPictures.length !== 0 && <ImageGallery 
+      searchedPictures={searchedPictures}/>}
     {isVisibleBtn && <Button
       type='button' 
       onClick={onMoreButton}
       title='Load more'/>}
+    {status==='pending' && <Spiner/>}
+    {status==="resolved" && searchedPictures.length === 0 && <UncorrectSearchMessage 
+    message='Sorry, no results were found for your search'/>}
     <ToastContainer
       position="top-center"
       autoClose={3000}

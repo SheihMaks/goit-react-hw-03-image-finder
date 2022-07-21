@@ -1,27 +1,33 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { ImageGalleryItemContainer,Img } from "./ImageGalleryItem.styled"
 import { Modal } from "components/ModalApp/Modal";
+import { ImageGalleryItemContainer,Img } from "./ImageGalleryItem.styled"
+
 export class ImageGalleryItem extends React.Component {
+    state={largeImg:''}
 
-state={
-    isOpen:false
-}
-
-onToggleModal=()=>{
-    this.setState(prevState=>({isOpen: prevState.isOpen ? false : true}))
-}
+    onOpenModal=()=>{
+        const {largeImgLink}=this.props;
+        this.setState(({largeImg: largeImgLink}))
+      }
+      
+    onCloseModal=()=>this.setState({largeImg:''})
 
 render(){
-    const {isOpen}= this.state;
-    const {webformatURL,largeImageURL}= this.props.picture;
-return(<ImageGalleryItemContainer>
-        <Img src={webformatURL}  alt="Picture" onClick={this.onToggleModal} />
-        {isOpen && <Modal onClick={this.onToggleModal} imageModal={largeImageURL} />}
+    const {webFormat}=this.props;
+    const {onOpenModal,onCloseModal}=this;
+    const {largeImg}=this.state;
+    return (<ImageGalleryItemContainer>
+        <Img src={webFormat} alt="Picture" onClick={onOpenModal} />
+        {largeImg !=='' && <Modal 
+    imageModal={largeImg} 
+    onClick={onCloseModal}/>}
         </ImageGalleryItemContainer>
-        )}}
+        )}
+}
 
-        ImageGalleryItem.propTypes={
-            webformatURL:PropTypes.string,
-            largeImageURL:PropTypes.string,
-        }
+ImageGalleryItem.propTypes={
+webFormat:PropTypes.string,
+largeImgLink:PropTypes.string,
+
+}
